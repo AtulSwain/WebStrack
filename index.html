@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebStack | Programming Language Explorer</title>
+
+<style>
+/* ================= THEME ================= */
+:root {
+    --bg: #f8fafc;
+    --text: #0f172a;
+    --card: #ffffff;
+    --accent: #4f46e5;
+    --accent-soft: #eef2ff;
+    --border: #e5e7eb;
+}
+
+body.dark {
+    --bg: #020617;
+    --text: #e5e7eb;
+    --card: #020617;
+    --accent: #38bdf8;
+    --accent-soft: #0c4a6e;
+    --border: #1e293b;
+}
+
+/* ================= GLOBAL ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    transition: 0.3s;
+}
+
+/* ================= HEADER ================= */
+header {
+    padding: 25px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.brand {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand h1 {
+    font-size: 1.8rem;
+    color: var(--accent);
+}
+
+.brand span {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+/* ================= CONTROLS ================= */
+.controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+input, select, button {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+}
+
+button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* ================= MAIN ================= */
+main {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+}
+
+/* ================= CARD ================= */
+.card {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.card h2 {
+    margin-bottom: 6px;
+}
+
+.meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.badge {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+.card p {
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+/* ================= MODAL ================= */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-box {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 25px;
+    max-width: 520px;
+    width: 100%;
+    animation: pop 0.35s ease;
+}
+
+@keyframes pop {
+    from { transform: scale(0.85); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close {
+    float: right;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.modal-box h2 {
+    margin-bottom: 10px;
+}
+
+.modal-box p {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+/* ================= FOOTER ================= */
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+    opacity: 0.6;
+}
+/* ================= RESPONSIVE DESIGN ================= */
+
+/* -------- Tablets (768px and below) -------- */
+@media (max-width: 768px) {
+
+    header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    input, select, button {
+        flex: 1;
+        min-width: 100px;
+    }
+
+    main {
+        padding: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .modal-box {
+        max-width: 90%;
+        padding: 22px;
+    }
+}
+
+/* -------- Phones (480px and below) -------- */
+@media (max-width: 480px) {
+
+    header {
+        position: sticky;
+        top: 0;
+        background: var(--bg);
+        z-index: 100;
+    }
+
+    .brand h1 {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+
+    .brand span {
+        text-align: center;
+        font-size: 12px;
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    input, select, button {
+        width: 100%;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    main {
+        padding: 15px;
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        border-radius: 12px;
+        padding: 16px;
+    }
+
+    .card h2 {
+        font-size: 1.2rem;
+    }
+
+    .card p {
+        font-size: 13px;
+    }
+
+    .badge {
+        font-size: 10px;
+        padding: 4px 6px;
+    }
+
+    footer {
+        font-size: 12px;
+        padding: 15px;
+    }
+
+    .modal-box {
+        width: 100%;
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .modal-box h2 {
+        font-size: 1.3rem;
+    }
+
+    .modal-box p {
+        font-size: 13px;
+    }
+}
+
+/* -------- Reduce motion for small screens -------- */
+@media (max-width: 480px) {
+    .card:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">
+        <h1>WebStack</h1>
+        <span>Programming Language Knowledge Hub</span>
+    </div>
+
+    <div class="controls">
+        <input type="text" id="search" placeholder="Search language...">
+        <select id="category">
+            <option value="all">All Categories</option>
+            <option value="Web">Web</option>
+            <option value="System">System</option>
+            <option value="AI">AI</option>
+            <option value="Mobile">Mobile</option>
+        </select>
+        <button id="themeToggle">🌙</button>
+    </div>
+</header>
+
+<main id="cards"></main>
+
+<footer>
+    © 2025 WebStack • Built with HTML, CSS & JavaScript
+</footer>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-box">
+        <span class="close" id="closeModal">✖</span>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const languages = [
+{
+    name: "JavaScript",
+    year: 1995,
+    creator: "Brendan Eich",
+    category: "Web",
+    difficulty: "Beginner",
+    usage: "Web apps, Backend, Mobile",
+    features: "Dynamic, Event-driven",
+    description: "JavaScript (JS)[a] is a programming language and core technology of the Web, alongside HTML and CSS. It was created by Brendan Eich in 1995.[6] As of 2025, the overwhelming majority of websites (98.9%) uses JavaScript on the client side for webpage behavior"
+},
+{
+    name: "Python",
+    year: 1991,
+    creator: "Guido van Rossum",
+    category: "AI",
+    difficulty: "Beginner",
+    usage: "AI, ML, Data Science",
+    features: "Readable, Large ecosystem",
+    description: "Python is a popular, high-level, general-purpose programming language known for its simple, readable syntax, supporting multiple styles like object-oriented and functional programming, used widely in web dev, data science, AI, automation, and software development, and valued for its versatility, large libraries, and beginner-friendliness"
+},
+{
+    name: "Java",
+    year: 1995,
+    creator: "James Gosling",
+    category: "Mobile",
+    difficulty: "Intermediate",
+    usage: "Enterprise, Android",
+    features: "Platform independent",
+    description: "Java is a popular, object-oriented programming language and platform known for its  (WORA) capability, allowing code to run on any device with a Java Virtual Machine (JVM). Created by Sun Microsystems in 1995, it's used for Android apps, web/desktop apps, enterprise systems, games, and big data, prized for being secure, fast, and having strong community suppor"
+},
+{
+    name: "C",
+    year: 1972,
+    creator: "Dennis Ritchie",
+    category: "System",
+    difficulty: "Advanced",
+    usage: "OS, Drivers",
+    features: "Low-level, Fast",
+    description: "C is a foundational, general-purpose programming language created by Dennis Ritchie in 1972, known for its speed, efficiency, and low-level memory access, making it ideal for operating systems (like UNIX), embedded systems, and compilers; it's considered the mother of all languages as many modern languages (Java, Python, C++) borrow its syntax and concepts, providing a strong base for understanding computer fundamentals. "
+},
+{
+    name: "C++",
+    year: 1985,
+    creator: "Bjarne Stroustrup",
+    category: "System",
+    difficulty: "Advanced",
+    usage: "Games, Engines",
+    features: "High performance",
+    description: "C++ is a powerful, high-performance, general-purpose programming language that supports multiple paradigms, including object-oriented, procedural, and generic programming. It was created as an extension of the C language, offering programmers more control over system resources and memory."
+},
+{
+    name: "Go",
+    year: 2009,
+    creator: "Google",
+    category: "System",
+    difficulty: "Intermediate",
+    usage: "Cloud, Backend",
+    features: "Fast compile, Concurrency",
+    description: "Go most commonly refers to Go (Golang), an open-source programming language from Google known for simplicity, performance, and built-in concurrency (goroutines) for cloud-native, backend, and systems programming, used in projects like Docker and Kubernetes. It can also refer to the ancient board game of Go, the Go Electric EV campaign in India, or other specific tools like the outbreak investigation software Go.Data."
+}
+];
+
+/* ================= ELEMENTS ================= */
+const cards = document.getElementById("cards");
+const search = document.getElementById("search");
+const category = document.getElementById("category");
+const modal = document.getElementById("modal");
+const modalContent = document.getElementById("modalContent");
+const closeModal = document.getElementById("closeModal");
+const themeToggle = document.getElementById("themeToggle");
+
+/* ================= FUNCTIONS ================= */
+function render(list) {
+    cards.innerHTML = "";
+    list.forEach(lang => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+            <h2>${lang.name}</h2>
+            <div class="meta">
+                <span class="badge">${lang.category}</span>
+                <span class="badge">${lang.difficulty}</span>
+                <span class="badge">${lang.year}</span>
+            </div>
+            <p>${lang.description}</p>
+        `;
+        card.onclick = () => openModal(lang);
+        cards.appendChild(card);
+    });
+}
+
+function openModal(lang) {
+    modalContent.innerHTML = `
+        <h2>${lang.name}</h2>
+        <p><strong>Year:</strong> ${lang.year}</p>
+        <p><strong>Creator:</strong> ${lang.creator}</p>
+        <p><strong>Category:</strong> ${lang.category}</p>
+        <p><strong>Difficulty:</strong> ${lang.difficulty}</p>
+        <p><strong>Usage:</strong> ${lang.usage}</p>
+        <p><strong>Key Features:</strong> ${lang.features}</p>
+        <p>${lang.description}</p>
+    `;
+    modal.classList.add("active");
+}
+
+function applyFilters() {
+    let filtered = languages.filter(l =>
+        l.name.toLowerCase().includes(search.value.toLowerCase())
+    );
+
+    if (category.value !== "all") {
+        filtered = filtered.filter(l => l.category === category.value);
+    }
+
+    render(filtered);
+}
+
+/* ================= EVENTS ================= */
+search.addEventListener("input", applyFilters);
+category.addEventListener("change", applyFilters);
+closeModal.onclick = () => modal.classList.remove("active");
+
+/* ================= THEME ================= */
+themeToggle.onclick = () => {
+    document.body.classList.toggle("dark");
+    const dark = document.body.classList.contains("dark");
+    localStorage.setItem("theme", dark ? "dark" : "light");
+    themeToggle.textContent = dark ? "☀️" : "🌙";
+};
+
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+    themeToggle.textContent = "☀️";
+}
+
+/* ================= INIT ================= */
+render(languages);
+</script>
+
+</body>
+</html>
