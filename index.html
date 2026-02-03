@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WebStack | Programming Language Explorer</title>
+<title>WebStack | Employee Collaboration Dashboard</title>
 
 <style>
-/* ================= THEME ================= */
 :root {
     --bg: #f8fafc;
     --text: #0f172a;
@@ -14,18 +13,22 @@
     --accent: #4f46e5;
     --accent-soft: #eef2ff;
     --border: #e5e7eb;
+    --muted: #64748b;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
 }
 
 body.dark {
     --bg: #020617;
     --text: #e5e7eb;
-    --card: #020617;
+    --card: #0f172a;
     --accent: #38bdf8;
     --accent-soft: #0c4a6e;
     --border: #1e293b;
+    --muted: #94a3b8;
 }
 
-/* ================= GLOBAL ================= */
 * {
     margin: 0;
     padding: 0;
@@ -39,20 +42,20 @@ body {
     transition: 0.3s;
 }
 
-/* ================= HEADER ================= */
 header {
-    padding: 25px;
+    padding: 22px 28px;
     border-bottom: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 16px;
 }
 
 .brand {
     display: flex;
     flex-direction: column;
+    gap: 4px;
 }
 
 .brand h1 {
@@ -62,22 +65,22 @@ header {
 
 .brand span {
     font-size: 13px;
-    opacity: 0.7;
+    color: var(--muted);
 }
 
-/* ================= CONTROLS ================= */
 .controls {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
 }
 
-input, select, button {
+input, select, button, textarea {
     padding: 10px 14px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid var(--border);
     background: var(--card);
     color: var(--text);
+    font-size: 14px;
 }
 
 button {
@@ -85,60 +88,198 @@ button {
     color: white;
     border: none;
     cursor: pointer;
+    font-weight: 600;
+}
+
+button.secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+}
+
+button.ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px dashed var(--border);
 }
 
 button:hover {
-    opacity: 0.9;
+    opacity: 0.92;
 }
 
-/* ================= MAIN ================= */
 main {
-    padding: 30px;
+    padding: 28px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 22px;
 }
 
-/* ================= CARD ================= */
+.dashboard {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr) 300px;
+    gap: 22px;
+}
+
+.stack {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
 .card {
     background: var(--card);
-    padding: 20px;
-    border-radius: 14px;
+    border-radius: 16px;
     border: 1px solid var(--border);
+    padding: 18px;
     transition: all 0.3s ease;
-    cursor: pointer;
 }
 
 .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 35px rgba(0,0,0,0.12);
 }
 
 .card h2 {
-    margin-bottom: 6px;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
 }
 
-.meta {
+.subtitle {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.badges {
     display: flex;
-    gap: 6px;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    gap: 6px;
 }
 
 .badge {
     font-size: 11px;
-    padding: 4px 8px;
+    padding: 4px 10px;
     border-radius: 20px;
     background: var(--accent-soft);
     color: var(--accent);
 }
 
-.card p {
-    font-size: 14px;
-    opacity: 0.85;
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
 }
 
-/* ================= MODAL ================= */
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat strong {
+    font-size: 1.6rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--border);
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--accent);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.list-item {
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.list-item span {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--success) 20%, transparent);
+}
+
+.status.busy {
+    background: var(--warning);
+}
+
+.status.offline {
+    background: var(--danger);
+}
+
+.call-controls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.channels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+}
+
+.channel {
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.channel button {
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+.task-pill {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.task-pill.high {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--danger);
+}
+
+.task-pill.medium {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--warning);
+}
+
+.task-pill.low {
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--success);
+}
+
 .modal {
     position: fixed;
     inset: 0;
@@ -156,10 +297,17 @@ main {
 .modal-box {
     background: var(--card);
     border-radius: 16px;
-    padding: 25px;
+    padding: 24px;
     max-width: 520px;
     width: 100%;
     animation: pop 0.35s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-box h3 {
+    font-size: 1.2rem;
 }
 
 @keyframes pop {
@@ -168,32 +316,25 @@ main {
 }
 
 .close {
-    float: right;
+    align-self: flex-end;
     cursor: pointer;
     font-size: 18px;
 }
 
-.modal-box h2 {
-    margin-bottom: 10px;
-}
-
-.modal-box p {
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-
-/* ================= FOOTER ================= */
 footer {
     text-align: center;
-    padding: 20px;
+    padding: 20px 20px 30px;
     font-size: 13px;
-    opacity: 0.6;
+    color: var(--muted);
 }
-/* ================= RESPONSIVE DESIGN ================= */
 
-/* -------- Tablets (768px and below) -------- */
+@media (max-width: 1100px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 768px) {
-
     header {
         flex-direction: column;
         align-items: stretch;
@@ -207,27 +348,15 @@ footer {
 
     input, select, button {
         flex: 1;
-        min-width: 100px;
+        min-width: 120px;
     }
 
     main {
         padding: 20px;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    }
-
-    .card {
-        padding: 18px;
-    }
-
-    .modal-box {
-        max-width: 90%;
-        padding: 22px;
     }
 }
 
-/* -------- Phones (480px and below) -------- */
 @media (max-width: 480px) {
-
     header {
         position: sticky;
         top: 0;
@@ -256,221 +385,357 @@ footer {
         padding: 12px;
     }
 
-    main {
-        padding: 15px;
+    .call-controls {
         grid-template-columns: 1fr;
     }
 
-    .card {
-        border-radius: 12px;
-        padding: 16px;
+    .channels {
+        grid-template-columns: 1fr;
     }
 
-    .card h2 {
-        font-size: 1.2rem;
-    }
-
-    .card p {
-        font-size: 13px;
-    }
-
-    .badge {
-        font-size: 10px;
-        padding: 4px 6px;
-    }
-
-    footer {
-        font-size: 12px;
-        padding: 15px;
-    }
-
-    .modal-box {
-        width: 100%;
-        padding: 18px;
-        border-radius: 14px;
-    }
-
-    .modal-box h2 {
-        font-size: 1.3rem;
-    }
-
-    .modal-box p {
-        font-size: 13px;
-    }
-}
-
-/* -------- Reduce motion for small screens -------- */
-@media (max-width: 480px) {
     .card:hover {
         transform: none;
         box-shadow: none;
     }
 }
-
 </style>
 </head>
 
 <body>
-
 <header>
     <div class="brand">
         <h1>WebStack</h1>
-        <span>Programming Language Knowledge Hub</span>
+        <span>Employee Collaboration & Support Hub</span>
     </div>
 
     <div class="controls">
-        <input type="text" id="search" placeholder="Search language...">
-        <select id="category">
-            <option value="all">All Categories</option>
-            <option value="Web">Web</option>
-            <option value="System">System</option>
-            <option value="AI">AI</option>
-            <option value="Mobile">Mobile</option>
+        <input type="text" id="search" placeholder="Search chats, tasks, or people...">
+        <select id="department">
+            <option value="all">All Departments</option>
+            <option value="engineering">Engineering</option>
+            <option value="product">Product</option>
+            <option value="operations">Operations</option>
+            <option value="hr">Human Resources</option>
         </select>
+        <button class="secondary" id="requestChat">Request HR/Manager</button>
         <button id="themeToggle">🌙</button>
     </div>
 </header>
 
-<main id="cards"></main>
+<main>
+    <section class="stat-grid">
+        <article class="card stat">
+            <span class="subtitle">Active Conversations</span>
+            <strong id="statChats">18</strong>
+            <div class="progress-bar"><div class="progress" style="width: 75%"></div></div>
+        </article>
+        <article class="card stat">
+            <span class="subtitle">Open Tasks</span>
+            <strong id="statTasks">24</strong>
+            <div class="progress-bar"><div class="progress" style="width: 62%"></div></div>
+        </article>
+        <article class="card stat">
+            <span class="subtitle">Online Employees</span>
+            <strong id="statPeople">12</strong>
+            <div class="progress-bar"><div class="progress" style="width: 84%"></div></div>
+        </article>
+        <article class="card stat">
+            <span class="subtitle">Pending Requests</span>
+            <strong>6</strong>
+            <div class="progress-bar"><div class="progress" style="width: 40%"></div></div>
+        </article>
+    </section>
+
+    <section class="dashboard">
+        <div class="stack">
+            <article class="card">
+                <h2>Quick Chat</h2>
+                <p class="subtitle">Start a secure conversation or jump into a channel.</p>
+                <div class="list" id="chatList"></div>
+            </article>
+
+            <article class="card">
+                <h2>Channels</h2>
+                <p class="subtitle">HR & management spaces for escalations.</p>
+                <div class="channels" id="channelList"></div>
+            </article>
+
+            <article class="card">
+                <h2>Call Center</h2>
+                <p class="subtitle">Audio, video, or group calls with one tap.</p>
+                <div class="call-controls">
+                    <button>🎧 Audio Call</button>
+                    <button>📹 Video Call</button>
+                    <button class="secondary">👥 Group Call</button>
+                    <button class="ghost">🗓 Schedule</button>
+                </div>
+            </article>
+        </div>
+
+        <div class="stack">
+            <article class="card">
+                <h2>Task Board</h2>
+                <p class="subtitle">Stay on top of your priorities.</p>
+                <div class="list" id="taskList"></div>
+            </article>
+
+            <article class="card">
+                <h2>Today’s Activity</h2>
+                <p class="subtitle">Recent updates across teams.</p>
+                <div class="list" id="activityList"></div>
+            </article>
+        </div>
+
+        <div class="stack">
+            <article class="card">
+                <h2>People Online</h2>
+                <p class="subtitle">See who is available for quick help.</p>
+                <div class="list" id="peopleList"></div>
+            </article>
+
+            <article class="card">
+                <h2>Support Shortcuts</h2>
+                <p class="subtitle">Common HR & manager requests.</p>
+                <div class="list">
+                    <div class="list-item">
+                        <div>
+                            <strong>HR Policies</strong>
+                            <span>Find leave, benefits, payroll</span>
+                        </div>
+                        <button class="secondary">Open</button>
+                    </div>
+                    <div class="list-item">
+                        <div>
+                            <strong>Manager 1:1</strong>
+                            <span>Schedule weekly check-in</span>
+                        </div>
+                        <button class="secondary">Book</button>
+                    </div>
+                    <div class="list-item">
+                        <div>
+                            <strong>Escalation Desk</strong>
+                            <span>Immediate response within 30 min</span>
+                        </div>
+                        <button>Start</button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
 
 <footer>
-    © 2025 WebStack • Built with HTML, CSS & JavaScript
+    © 2025 WebStack • Employee engagement dashboard with secure chat & calls
 </footer>
 
-<!-- MODAL -->
 <div class="modal" id="modal">
     <div class="modal-box">
         <span class="close" id="closeModal">✖</span>
-        <div id="modalContent"></div>
+        <h3 id="modalTitle">Request a private chat</h3>
+        <p class="subtitle">Enter your details so HR or your manager can verify access.</p>
+        <label>
+            Employee Name
+            <input type="text" id="employeeName" placeholder="e.g. Jordan Lee">
+        </label>
+        <label>
+            Employee ID
+            <input type="text" id="employeeId" placeholder="e.g. WS-2048">
+        </label>
+        <label>
+            Request Type
+            <select id="requestType">
+                <option value="Manager">Manager Chat</option>
+                <option value="HR">HR Support</option>
+                <option value="Compliance">Compliance & Risk</option>
+            </select>
+        </label>
+        <label>
+            Message
+            <textarea id="employeeMessage" rows="4" placeholder="Share the topic and urgency..."></textarea>
+        </label>
+        <button id="submitRequest">Submit Request</button>
+        <p class="subtitle" id="requestStatus"></p>
     </div>
 </div>
 
 <script>
-/* ================= DATA ================= */
-const languages = [
-{
-    name: "JavaScript",
-    year: 1995,
-    creator: "Brendan Eich",
-    category: "Web",
-    difficulty: "Beginner",
-    usage: "Web apps, Backend, Mobile",
-    features: "Dynamic, Event-driven",
-    description: "JavaScript (JS)[a] is a programming language and core technology of the Web, alongside HTML and CSS. It was created by Brendan Eich in 1995.[6] As of 2025, the overwhelming majority of websites (98.9%) uses JavaScript on the client side for webpage behavior"
-},
-{
-    name: "Python",
-    year: 1991,
-    creator: "Guido van Rossum",
-    category: "AI",
-    difficulty: "Beginner",
-    usage: "AI, ML, Data Science",
-    features: "Readable, Large ecosystem",
-    description: "Python is a popular, high-level, general-purpose programming language known for its simple, readable syntax, supporting multiple styles like object-oriented and functional programming, used widely in web dev, data science, AI, automation, and software development, and valued for its versatility, large libraries, and beginner-friendliness"
-},
-{
-    name: "Java",
-    year: 1995,
-    creator: "James Gosling",
-    category: "Mobile",
-    difficulty: "Intermediate",
-    usage: "Enterprise, Android",
-    features: "Platform independent",
-    description: "Java is a popular, object-oriented programming language and platform known for its  (WORA) capability, allowing code to run on any device with a Java Virtual Machine (JVM). Created by Sun Microsystems in 1995, it's used for Android apps, web/desktop apps, enterprise systems, games, and big data, prized for being secure, fast, and having strong community suppor"
-},
-{
-    name: "C",
-    year: 1972,
-    creator: "Dennis Ritchie",
-    category: "System",
-    difficulty: "Advanced",
-    usage: "OS, Drivers",
-    features: "Low-level, Fast",
-    description: "C is a foundational, general-purpose programming language created by Dennis Ritchie in 1972, known for its speed, efficiency, and low-level memory access, making it ideal for operating systems (like UNIX), embedded systems, and compilers; it's considered the mother of all languages as many modern languages (Java, Python, C++) borrow its syntax and concepts, providing a strong base for understanding computer fundamentals. "
-},
-{
-    name: "C++",
-    year: 1985,
-    creator: "Bjarne Stroustrup",
-    category: "System",
-    difficulty: "Advanced",
-    usage: "Games, Engines",
-    features: "High performance",
-    description: "C++ is a powerful, high-performance, general-purpose programming language that supports multiple paradigms, including object-oriented, procedural, and generic programming. It was created as an extension of the C language, offering programmers more control over system resources and memory."
-},
-{
-    name: "Go",
-    year: 2009,
-    creator: "Google",
-    category: "System",
-    difficulty: "Intermediate",
-    usage: "Cloud, Backend",
-    features: "Fast compile, Concurrency",
-    description: "Go most commonly refers to Go (Golang), an open-source programming language from Google known for simplicity, performance, and built-in concurrency (goroutines) for cloud-native, backend, and systems programming, used in projects like Docker and Kubernetes. It can also refer to the ancient board game of Go, the Go Electric EV campaign in India, or other specific tools like the outbreak investigation software Go.Data."
-}
+const chats = [
+    { name: "HR Helpdesk", status: "online", note: "Benefits & onboarding" },
+    { name: "Manager Lina", status: "busy", note: "Weekly priorities" },
+    { name: "IT Support", status: "online", note: "Device & access" },
+    { name: "Wellness Coach", status: "offline", note: "Schedule check-ins" }
 ];
 
-/* ================= ELEMENTS ================= */
-const cards = document.getElementById("cards");
+const tasks = [
+    { title: "Finish Q3 roadmap", owner: "You", due: "Today", priority: "high" },
+    { title: "Client onboarding pack", owner: "Alex", due: "Tomorrow", priority: "medium" },
+    { title: "Update training module", owner: "HR Team", due: "Fri", priority: "low" },
+    { title: "Security review", owner: "Compliance", due: "Mon", priority: "high" }
+];
+
+const people = [
+    { name: "Amira Khan", role: "Product Lead", status: "online" },
+    { name: "Noah Park", role: "Engineering", status: "online" },
+    { name: "Sofia Mendes", role: "HR Partner", status: "busy" },
+    { name: "Carlos Rivera", role: "Operations", status: "offline" },
+    { name: "Tessa Wright", role: "Support", status: "online" }
+];
+
+const activities = [
+    "3 employees joined the HR onboarding channel",
+    "Manager Lina approved 2 leave requests",
+    "Video call scheduled with Finance at 3:30 PM",
+    "New policy update published in HR Knowledge Base"
+];
+
+const channels = [
+    { name: "HR Direct", members: 12 },
+    { name: "Manager Escalations", members: 8 },
+    { name: "Payroll & Benefits", members: 6 },
+    { name: "People Ops", members: 10 }
+];
+
+const chatList = document.getElementById("chatList");
+const taskList = document.getElementById("taskList");
+const peopleList = document.getElementById("peopleList");
+const activityList = document.getElementById("activityList");
+const channelList = document.getElementById("channelList");
 const search = document.getElementById("search");
-const category = document.getElementById("category");
+const department = document.getElementById("department");
 const modal = document.getElementById("modal");
-const modalContent = document.getElementById("modalContent");
+const requestChat = document.getElementById("requestChat");
 const closeModal = document.getElementById("closeModal");
+const submitRequest = document.getElementById("submitRequest");
+const requestStatus = document.getElementById("requestStatus");
 const themeToggle = document.getElementById("themeToggle");
 
-/* ================= FUNCTIONS ================= */
-function render(list) {
-    cards.innerHTML = "";
-    list.forEach(lang => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-            <h2>${lang.name}</h2>
-            <div class="meta">
-                <span class="badge">${lang.category}</span>
-                <span class="badge">${lang.difficulty}</span>
-                <span class="badge">${lang.year}</span>
+function renderChats(list) {
+    chatList.innerHTML = "";
+    list.forEach(chat => {
+        const item = document.createElement("div");
+        item.className = "list-item";
+        item.innerHTML = `
+            <div>
+                <strong>${chat.name}</strong>
+                <span>${chat.note}</span>
             </div>
-            <p>${lang.description}</p>
+            <span class="status ${chat.status}"></span>
         `;
-        card.onclick = () => openModal(lang);
-        cards.appendChild(card);
+        chatList.appendChild(item);
     });
 }
 
-function openModal(lang) {
-    modalContent.innerHTML = `
-        <h2>${lang.name}</h2>
-        <p><strong>Year:</strong> ${lang.year}</p>
-        <p><strong>Creator:</strong> ${lang.creator}</p>
-        <p><strong>Category:</strong> ${lang.category}</p>
-        <p><strong>Difficulty:</strong> ${lang.difficulty}</p>
-        <p><strong>Usage:</strong> ${lang.usage}</p>
-        <p><strong>Key Features:</strong> ${lang.features}</p>
-        <p>${lang.description}</p>
-    `;
-    modal.classList.add("active");
+function renderTasks(list) {
+    taskList.innerHTML = "";
+    list.forEach(task => {
+        const item = document.createElement("div");
+        item.className = "list-item";
+        item.innerHTML = `
+            <div>
+                <strong>${task.title}</strong>
+                <span>${task.owner} • Due ${task.due}</span>
+            </div>
+            <span class="task-pill ${task.priority}">${task.priority}</span>
+        `;
+        taskList.appendChild(item);
+    });
+}
+
+function renderPeople(list) {
+    peopleList.innerHTML = "";
+    list.forEach(person => {
+        const item = document.createElement("div");
+        item.className = "list-item";
+        item.innerHTML = `
+            <div>
+                <strong>${person.name}</strong>
+                <span>${person.role}</span>
+            </div>
+            <span class="status ${person.status}"></span>
+        `;
+        peopleList.appendChild(item);
+    });
+}
+
+function renderActivities(list) {
+    activityList.innerHTML = "";
+    list.forEach(activity => {
+        const item = document.createElement("div");
+        item.className = "list-item";
+        item.innerHTML = `
+            <div>
+                <strong>${activity}</strong>
+                <span>Updated moments ago</span>
+            </div>
+            <button class="ghost">View</button>
+        `;
+        activityList.appendChild(item);
+    });
+}
+
+function renderChannels(list) {
+    channelList.innerHTML = "";
+    list.forEach(channel => {
+        const item = document.createElement("div");
+        item.className = "channel";
+        item.innerHTML = `
+            <span>${channel.name}</span>
+            <button class="secondary">Join ${channel.members}</button>
+        `;
+        channelList.appendChild(item);
+    });
 }
 
 function applyFilters() {
-    let filtered = languages.filter(l =>
-        l.name.toLowerCase().includes(search.value.toLowerCase())
-    );
+    const query = search.value.toLowerCase();
+    const filter = department.value;
 
-    if (category.value !== "all") {
-        filtered = filtered.filter(l => l.category === category.value);
-    }
+    const filteredChats = chats.filter(chat => chat.name.toLowerCase().includes(query));
+    const filteredTasks = tasks.filter(task => task.title.toLowerCase().includes(query));
+    const filteredPeople = people.filter(person => {
+        const matchesQuery = person.name.toLowerCase().includes(query) || person.role.toLowerCase().includes(query);
+        if (filter === "all") {
+            return matchesQuery;
+        }
+        return matchesQuery && person.role.toLowerCase().includes(filter);
+    });
 
-    render(filtered);
+    renderChats(filteredChats);
+    renderTasks(filteredTasks);
+    renderPeople(filteredPeople);
 }
 
-/* ================= EVENTS ================= */
-search.addEventListener("input", applyFilters);
-category.addEventListener("change", applyFilters);
-closeModal.onclick = () => modal.classList.remove("active");
+requestChat.addEventListener("click", () => {
+    modal.classList.add("active");
+    requestStatus.textContent = "";
+});
 
-/* ================= THEME ================= */
+closeModal.addEventListener("click", () => modal.classList.remove("active"));
+
+submitRequest.addEventListener("click", () => {
+    const name = document.getElementById("employeeName").value.trim();
+    const id = document.getElementById("employeeId").value.trim();
+    const type = document.getElementById("requestType").value;
+    const message = document.getElementById("employeeMessage").value.trim();
+
+    if (!name || !id || !message) {
+        requestStatus.textContent = "Please complete name, ID, and message before submitting.";
+        requestStatus.style.color = "var(--warning)";
+        return;
+    }
+
+    requestStatus.textContent = `Request sent to ${type}. We'll notify you in the chat panel.`;
+    requestStatus.style.color = "var(--success)";
+});
+
+search.addEventListener("input", applyFilters);
+department.addEventListener("change", applyFilters);
+modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+        modal.classList.remove("active");
+    }
+});
+
 themeToggle.onclick = () => {
     document.body.classList.toggle("dark");
     const dark = document.body.classList.contains("dark");
@@ -483,9 +748,11 @@ if (localStorage.getItem("theme") === "dark") {
     themeToggle.textContent = "☀️";
 }
 
-/* ================= INIT ================= */
-render(languages);
+renderChats(chats);
+renderTasks(tasks);
+renderPeople(people);
+renderActivities(activities);
+renderChannels(channels);
 </script>
-
 </body>
 </html>
